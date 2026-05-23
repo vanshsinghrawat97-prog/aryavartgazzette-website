@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" href="pin.jpeg">
+<title>The Aryavart Gazette</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #1a1108;
+    --paper: #f5efe0;
+    --aged: #e8dcc4;
+    --sepia: #8b6914;
+    --rust: #9b3a1e;
+    --gold: #c9953a;
+    --light-sepia: #f0e6cc;
+    --divider: #b8965a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-top: 6px double var(--ink);
+    border-bottom: 6px double var(--ink);
+    padding: 0.4rem 2rem;
+    text-align: center;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+  }
+
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--aged);
+    padding: 0.5rem 0 0.3rem;
+    border-bottom: 1px solid var(--sepia);
+    margin-bottom: 0.5rem;
+  }
+
+  .masthead-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--paper);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    line-height: 1;
+    padding: 0.3rem 0;
+  }
+
+  .masthead-subtitle {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-top: 0.2rem;
+  }
+
+  .masthead-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--aged);
+    padding: 0.3rem 0 0.4rem;
+    border-top: 1px solid var(--sepia);
+    margin-top: 0.4rem;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--aged);
+    border-bottom: 2px solid var(--divider);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  nav button {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    background: none;
+    border: none;
+    border-right: 1px solid var(--divider);
+    padding: 0.65rem 1.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  nav button:first-child { border-left: 1px solid var(--divider); }
+  nav button:hover, nav button.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-head {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .section-head::before, .section-head::after {
+    content: '';
+    display: inline-block;
+    width: 80px;
+    height: 1px;
+    background: var(--divider);
+    vertical-align: middle;
+    margin: 0 1rem;
+  }
+
+  .section-head h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    display: inline;
+  }
+
+  /* ── FEATURED / HERO ── */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0;
+    border: 1px solid var(--divider);
+    margin-bottom: 2.5rem;
+    background: var(--light-sepia);
+  }
+
+  .featured-main {
+    padding: 2rem 2rem 2rem 2rem;
+    border-right: 1px solid var(--divider);
+  }
+
+  .featured-sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .featured-sidebar .side-article {
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--divider);
+    cursor: pointer;
+    transition: background 0.2s;
+    flex: 1;
+  }
+
+  .featured-sidebar .side-article:last-child { border-bottom: none; }
+  .featured-sidebar .side-article:hover { background: var(--aged); }
+
+  /* ── ARTICLE CARD TYPOGRAPHY ── */
+  .kicker {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 0.4rem;
+  }
+
+  .headline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .headline.sm { font-size: 1.1rem; font-weight: 700; }
+  .headline.md { font-size: 1.5rem; }
+
+  .byline {
+    font-size: 0.78rem;
+    color: var(--sepia);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    font-style: italic;
+  }
+
+  .deck {
+    font-size: 1.05rem;
+    color: #3d2c0e;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .read-more {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rust);
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-top: 0.5rem;
+    display: inline-block;
+    transition: color 0.2s;
+  }
+
+  .read-more:hover { color: var(--ink); text-decoration: underline; }
+
+  .btn-delete {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--rust);
+    border: 1px solid #7a2a12;
+    padding: 0.55rem 1.4rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-delete:hover { background: #7a2a12; }
+
+  .confirm-bar {
+    background: #3a0e04;
+    border: 1px solid var(--rust);
+    padding: 1rem 1.4rem;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .confirm-bar span {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--aged);
+    font-size: 0.95rem;
+    flex: 1;
+  }
+
+  .btn-confirm-yes {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--rust);
+    color: var(--paper);
+    border: none;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-confirm-yes:hover { background: #7a2a12; }
+
+  .btn-confirm-no {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    color: var(--aged);
+    border: 1px solid var(--aged);
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-confirm-no:hover { background: var(--aged); color: var(--ink); }
+
+  /* ── ARTICLES GRID ── */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0;
+    border: 1px solid var(--divider);
+    margin-bottom: 2.5rem;
+  }
+
+  .article-card {
+    padding: 1.5rem;
+    border-right: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    cursor: pointer;
+    transition: background 0.2s;
+    background: var(--light-sepia);
+  }
+
+  .article-card:hover { background: var(--aged); }
+
+  /* ── ORNAMENTAL DIVIDER ── */
+  .ornament {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.4rem;
+    margin: 1.5rem 0;
+    letter-spacing: 0.5rem;
+  }
+
+  .rule {
+    border: none;
+    border-top: 1px solid var(--divider);
+    margin: 2rem 0;
+  }
+
+  .rule.thick {
+    border-top: 3px double var(--divider);
+  }
+
+  /* ── ADD ARTICLE FORM ── */
+  .add-panel {
+    background: var(--light-sepia);
+    border: 1px solid var(--divider);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .add-panel h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    color: var(--sepia);
+    text-align: center;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem; }
+
+  label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sepia);
+  }
+
+  input, select, textarea {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    background: var(--paper);
+    border: 1px solid var(--divider);
+    color: var(--ink);
+    padding: 0.55rem 0.8rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--sepia);
+    background: #fff;
+  }
+
+  textarea { min-height: 180px; resize: vertical; line-height: 1.7; }
+
+  .btn-primary {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 0.75rem 2.5rem;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--rust); }
+
+  /* ── FULL ARTICLE VIEW ── */
+  .article-full {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  .article-full .headline { font-size: 2.6rem; margin-bottom: 0.6rem; }
+
+  .article-full .article-body {
+    font-size: 1.08rem;
+    line-height: 1.85;
+    color: #2a1e08;
+  }
+
+  .article-full .article-body p { margin-bottom: 1.2em; }
+
+  .article-full .article-body p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    float: left;
+    line-height: 0.75;
+    margin: 0.1em 0.08em 0 0;
+    color: var(--rust);
+  }
+
+  .back-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    cursor: pointer;
+    border: 1px solid var(--divider);
+    background: none;
+    padding: 0.5rem 1.2rem;
+    margin-bottom: 2rem;
+    display: inline-block;
+    transition: background 0.2s;
+  }
+
+  .back-btn:hover { background: var(--aged); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    padding: 0.9rem 1.6rem;
+    border-left: 4px solid var(--gold);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .toast.show { opacity: 1; transform: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: var(--aged);
+    text-align: center;
+    padding: 1.5rem 2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    border-top: 4px double var(--divider);
+    font-style: italic;
+  }
+
+  footer span { color: var(--gold); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .featured-grid { grid-template-columns: 1fr; }
+    .featured-main { border-right: none; border-bottom: 1px solid var(--divider); }
+    .form-row { grid-template-columns: 1fr; }
+    .headline { font-size: 1.5rem; }
+    .article-full .headline { font-size: 1.8rem; }
+    nav button { padding: 0.6rem 0.9rem; font-size: 0.65rem; }
+    .masthead-top, .masthead-bottom { flex-direction: column; gap: 0.2rem; text-align: center; }
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    background: var(--sepia);
+    color: var(--paper);
+    padding: 0.15rem 0.5rem;
+    margin-right: 0.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--sepia);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span>Est. 2025</span>
+    <span>☙ Truth · Tradition · Testimony ❧</span>
+    <span id="masthead-date"></span>
+  </div>
+  <div class="masthead-title">The Aryavart Gazette</div>
+  <div class="masthead-subtitle">A Chronicle of Thought & Expression</div>
+  <div class="masthead-bottom">
+    <span>Political Article - Writing Gazzete</span>
+    <span>Independent Press of the Scholar's Quill</span>
+    <span>Available : Every time</span>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <button class="active" onclick="showSection('home')">Front Page</button>
+  <button onclick="showSection('all')">All Articles</button>
+  <button onclick="showSection('write')">Submit Piece</button>
+  <button onclick="showSection('about')">About</button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="wrapper" id="app">
+  <!-- HOME -->
+  <section id="sec-home">
+
+    <!-- FEATURED -->
+    <div class="section-head"><h2>Today's Edition</h2></div>
+
+    <div id="featured-area"></div>
+
+    <hr class="rule thick"/>
+
+    <!-- MORE -->
+    <div class="section-head"><h2>More From The Gazette</h2></div>
+    <div class="articles-grid" id="more-grid"></div>
+
+  </section>
+
+  <!-- ALL -->
+  <section id="sec-all" style="display:none">
+    <div class="section-head"><h2>Complete Archive</h2></div>
+    <div class="articles-grid" id="all-grid"></div>
+    <div class="empty-state" id="all-empty" style="display:none">No articles yet. Submit your first piece!</div>
+  </section>
+
+  <!-- WRITE -->
+  <section id="sec-write" style="display:none">
+    <div class="section-head"><h2>Submit A Piece</h2></div>
+    <div class="add-panel">
+      <h3>✦ Contribute to the Gazette ✦</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Headline *</label>
+          <input type="text" id="f-title" placeholder="A compelling headline…"/>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="f-cat">
+            <option>Opinion</option>
+            <option>Culture</option>
+            <option>Society</option>
+            <option>Politics</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Author Name</label>
+          <input type="text" id="f-author" placeholder="Your name or pen name"/>
+        </div>
+        <div class="form-group">
+          <label>Tagline / Deck</label>
+          <input type="text" id="f-deck" placeholder="A short summary or hook…"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Body Text *</label>
+        <textarea id="f-body" placeholder="Write your article here. Paragraphs will be formatted automatically."></textarea>
+      </div>
+      <button class="btn-primary" onclick="submitArticle()">Publish to the Gazette</button>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="sec-about" style="display:none">
+    <div class="article-full">
+      <div class="kicker">The Press</div>
+      <div class="headline">About The Aryavart Gazette</div>
+      <hr class="rule"/>
+      <div class="article-body">
+        <p>The Aryavart Gazette is a personal writing showcase — a digital broadsheet built in the tradition of the great presses of old, where ideas were set in type and distributed with care and conviction.</p>
+        <p>Here, every article is a column, every submission a declaration. The Gazette exists to give voice to thoughtful writing: opinion, culture, history, and everything in between.</p>
+        <p>Submit your pieces using the <em>Submit Piece</em> tab. They will appear instantly on the front page. There are no editors to appease — only readers to persuade.</p>
+        <div class="ornament">✦ ✦ ✦</div>
+        <p style="text-align:center; font-style:italic; color: var(--sepia);">"He who writes, endures."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTICLE FULL VIEW -->
+  <section id="sec-article" style="display:none"></section>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <span>The Aryavart Gazette</span> &nbsp;·&nbsp; Est. 2025 &nbsp;·&nbsp; All Rights Reserved by Shri Vajendra Singh Rawat
+</footer>
+
+<script>
+  // ── DATA ──
+  const STORAGE_KEY = 'aryavart_gazette_articles';
+
+  function loadArticles() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveArticles(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+
+  // Reset seed version — bump this number to force a fresh seed
+  const SEED_VERSION = 'v3';
+  if (localStorage.getItem(STORAGE_KEY + '_version') !== SEED_VERSION) {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(STORAGE_KEY + '_version', SEED_VERSION);
+  }
+
+  let articles = loadArticles();
+
+  // Seed articles if empty
+  if (articles.length === 0) {
+    articles = [
+      {
+        id: Date.now() - 6000,
+        title: "Atrocities Being Committed Against Men",
+        category: "Societal Injustice",
+        author: "Shri Vajendra Singh Rawat",
+        deck: "How social expectations, legal debates, and cultural silence continue to shape the struggles faced by men in modern society.",
+        body: "The male gender — historically regarded as noble and, in times past, the dominant force — has now been supplanted by modern urban society. This shift has elevated women to a position of dominance, enabling them to rule over men and keep them under their heel. Contemporary women have weaponized the law itself to exploit and fleece men. If the male gender does not rise up once again, these atrocities against them will only continue to escalate.\n\nSince the rise of feminism and wokeism, women have developed an inflated sense of entitlement and arrogance. To eradicate this deep-seated issue, these very ideologies must be dismantled. Traditional Indian culture neither endorses nor accommodates such behaviors; however, in this modern era, there are indeed some women who have worked tirelessly to help men overcome these challenges.\n\nNowadays, cases such as those involving Atul Subhash and Mr. Khurana are surfacing — instances where men are severely exploited, while their hard-earned money is squandered for the pleasure of others. Neither the country's judicial system nor its news channels address this issue. Society, too, has played a significant role in exacerbating this problem.\n\nIf a girl is raped and murdered, protests and demonstrations are immediately organized at Delhi's Red Fort, and the judicial system springs into swift action. However, if a man finds himself grappling with similar injustices, he receives support from neither society nor the judiciary.\n\nAs long as the banner of feminism flies, the male gender will continue to endure such oppression. If men do not become vigilant, they will remain subject to these injustices. Men must rise up to protest and launch a revolution against this state of affairs.",
+        date: new Date(Date.now() - 5 * 86400000).toDateString()
+      },
+      {
+        id: Date.now() - 5000,
+        title: "Injustices Perpetrated Against the Rajput Community Over the Years",
+        category: "Cultural Injustice",
+        author: "Shri Vajendra Singh Rawat",
+        deck: "How political shifts, historical conflicts, and social change shaped the struggles faced by the Rajput community over generations.",
+        body: "Rajputs have made sacrifices on numerous occasions to protect their religion; regardless of the individual, every Rajput has made sacrifices for the sake of their country. However, ever since the advent of democracy, the treatment meted out to Rajputs has been nothing short of shameful.\n\n1. Speaking at an event, Sampat Singh Shekhawat, the State President of the Rajput Reservation Forum, stated that the demand for granting OBC (Other Backward Classes) reservation to the Rajput community has persisted since 1990. It is a matter of deep regret that, to date, the government has taken no action in this regard. While people from other communities receive a response when they raise demands, in the case of Rajputs — despite numerous representations and memorandums being submitted — the government has failed to even provide a reply.\n\nConsequently, the government is now being given a seven-day ultimatum to formally write to the OBC Commission regarding reservation for Rajputs within this timeframe. If this action is not taken within seven days, members of the Rajput community will gather in Jaipur to organize a massive rally and launch a protest movement.\n\nHe noted that the Rajput community constitutes 10 percent of Rajasthan's population; therefore, this community should not be underestimated. The State and Central governments must, without delay, commission a survey of the Rajput community through the OBC Commission. The socio-economic condition of Rajputs is currently quite precarious; many lack even basic amenities. Speaking specifically of the district level, 60 percent of the community's members reside in kaccha (mud-and-thatch) houses. After visiting 120 villages, only two women from the community were found to be employed in government services. It is a direct consequence of the reservation policies implemented for other communities that, whereas Rajputs previously accounted for 31 percent of Station House Officers (SHOs) in the police force, their representation has now dwindled to less than 1.5 percent.\n\n2. Brij Bhushan Sharan Singh is a former Member of Parliament (MP) from Kaiserganj, having served in the 16th Lok Sabha as a representative of the Bharatiya Janata Party (BJP). He has been elected as a Member of Parliament six times. He has been implicated in cases involving rape and various other heinous crimes, and has been named as an accused in several instances of misconduct. However, due to a lack of sufficient evidence against him at the time, he was acquitted. It has been alleged that Vinesh Phogat orchestrated this conspiracy against Brij Bhushan Sharan Singh in an attempt to secure an election ticket from the Congress party.\n\n3. The Gujjars — along with other castes — are engaged in the act of appropriating the history of the Rajputs. The evidence for this assertion can be found within history itself. Let me apprise you of a dispute involving the Gujjars in Kaithal, Haryana — an issue that dates back about a year. Today, the administration affixed a black strip over the word Gujjar inscribed on the statue of Emperor Mihir Bhoj, which is installed at the Kurukshetra Road intersection in Kaithal, Haryana.\n\nIt is noteworthy that the statue of Emperor Mihir Bhoj was unveiled on July 20. Prior to this, on July 19, members of both communities had confronted one another. Members of the Rajput community held a meeting at Hanuman Vatika to strategize their visit to the intersection; however, the police prevented them from proceeding there. Despite this, they remained adamant about reaching the intersection. Consequently, the police resorted to using mild force against the group and detained over 100 individuals. Since then, this dispute has continued to escalate. When the matter reached the Punjab and Haryana High Court, the Court issued orders on August 3 to cover up the word Gujjar. Now, a week later, the district administration has taken action to cover the word Gujjar on the nameplate.",
+        date: new Date(Date.now() - 4 * 86400000).toDateString()
+      },
+      {
+        id: Date.now() - 4000,
+        title: "Weapon Worship in Hindu Culture and the Reality of Muslims",
+        category: "Culture and Politics",
+        author: "Shri Vajendra Singh Rawat",
+        deck: "Exploring the cultural meaning of weapon worship in Hinduism and its place in historical religious conflicts.",
+        body: "Weapon worship holds immense significance in Hindu culture; regardless of one's caste, this tradition originated with the Rajputs. This cultural practice is vital to our Hindu faith, serving to uphold the dignity of our weaponry and elevate it to great heights, thereby ensuring divine favor. The deities themselves are the patrons of weapons, and the power attributed to any weapon is believed to stem solely from the blessings of the Divine.\n\nAnother flaw prevalent among Hindus is their persistent indulgence in casteism. Is such behavior truly justifiable? The Mahabharata describes caste not as a rigid hierarchy, but as a classification based solely on one's occupation and deeds. If an individual born into one caste chooses to engage in the work typically associated with another — such as woodcutting or other trades — they are not to be deemed as belonging to a lower caste. Furthermore, it is stated that if an individual wishes to change their caste affiliation, they may do so without any hesitation.\n\nYet, these misguided Hindus have misinterpreted these principles, fragmenting the caste system into countless divisions; as a result, those belonging to the so-called lower castes are forced to endure immense hardships — a reality that brings shame upon us Hindus. If the Hindu community does not awaken at this critical juncture, it may never awaken at all.\n\nTo awaken Hindus, it is essential to raise awareness — a task that the Samvay Yuva Sangathan and the Rashtravadi Janlok Sangathan will assist in accomplishing. The sole objective of this organization is to awaken the Hindu community and to enable the nation's youth to acquire knowledge regarding the Hindu faith.",
+        date: new Date(Date.now() - 3 * 86400000).toDateString()
+      },
+      {
+        id: Date.now() - 3000,
+        title: "Attacks and Atrocities Against Hindus in Bangladesh Following the Coup",
+        category: "Political",
+        author: "Shri Vajendra Singh Rawat",
+        deck: "How political instability, religious tensions, and the collapse of public order left Hindu communities facing fear, violence, and uncertainty in Bangladesh.",
+        body: "Ever since Sheikh Hasina stepped down from the office of Prime Minister, Bangladesh has been thrown into turmoil. For a few days, Hindus in Bangladesh united to stage protests; however, the situation has now taken a turn for the worse. Initially, Hindu families would stand guard outside their homes, armed to protect their property.\n\nNow, however, the Bangladeshi police and army are actively attacking these Hindu protests. Furthermore, in one incident, Bangladeshi police personnel raided an office equipped with CCTV surveillance; they proceeded to smash the camera with a baton in a blatant attempt to destroy evidence — a truly alarming development.\n\nWith no functioning government currently in place, the police and army are roaming the streets unchecked — a terrifying reality for the Hindu population in the region. The BJP has yet to issue any statement regarding this crisis, nor have they made any attempt to facilitate the evacuation of Hindus from the country.\n\nMeanwhile, local Muslims have begun raising provocative slogans, and a fatwa has reportedly been issued calling for the eradication of ISKCON. It is now incumbent upon us — the Hindus — to take action; for if we fail to do so, the entire Hindu population in that region faces certain annihilation.",
+        date: new Date(Date.now() - 2 * 86400000).toDateString()
+      },
+      {
+        id: Date.now() - 2000,
+        title: "Khalistani Pressure and Atrocities Against Hindus Residing in Canada",
+        category: "Political",
+        author: "Shri Vajendra Singh Rawat",
+        deck: "How extremism, intimidation, and identity politics are shaping the experience of Hindu communities in Canada.",
+        body: "These Punjabis are hatching a conspiracy to create a new nation — named Khalistan — a plan that has been in the works for many years. Khalistan is envisioned as a religious state seeking to expand its territorial claims to include areas within Shimla, Haryana, Himachal Pradesh, Chandigarh, and Lahore.\n\nBefore delving further into this matter, it is crucial for everyone to understand its historical context. The Khalistan movement officially began on April 29, 1986, following Operation Blue Star — a mission ordered by Indira Gandhi — which ignited deep resentment and anger within the hearts of the Sikh community. Although the aspiration to create Khalistan was initially confined to a small minority — and was neither endorsed nor desired by the Akali Dal — the movement persisted and continued to gain momentum.\n\nSubsequently, a faction of Khalistani Sikhs emigrated from India to settle in Canada, where they began actively pursuing their agenda for the creation of Khalistan. While there, they have perpetrated attacks against numerous Hindus; for instance, a notable incident involving an assault on Hindus occurred in Brampton.\n\nMeanwhile, back in India, Amritpal Singh was arrested on April 23, 2023, after authorities recovered 18 cartridges and 100 grams of heroin from his possession. The Punjab government had, in fact, formulated a plan for Amritpal Singh's arrest well in advance.\n\nThe situation has now evolved significantly; alongside the Hindu community, the local Canadian populace has also grown increasingly exasperated with the Khalistanis. The Khalistanis have crossed all boundaries, going so far as to have their leaders and sympathizers within the Canadian parliament demand the resignation of Prime Minister Justin Trudeau. If this trend continues unchecked, it is impossible to predict when Canada itself might be transformed into a Khalistani state.",
+        date: new Date(Date.now() - 1 * 86400000).toDateString()
+      },
+      {
+        id: Date.now() - 1000,
+        title: "Atrocities Committed by Muslims Against Hindus, and the Waqf Board",
+        category: "Society",
+        author: "Shri Vajendra Singh Rawat",
+        deck: "A historical and political examination of conflict, memory, land, and identity in India's civilizational debate.",
+        body: "Muslims have subjected Hindus to atrocities for years — whether before independence or after it. Even in this 21st century, while significant development may have occurred in other spheres, it has completely bypassed the Hindu community. Hindus continue to wander about wearing the veil of secularism; ironically, despite possessing extensive knowledge of other religions, they remain utterly ignorant — knowing not even one percent — about their own faith.\n\nThe government in this country exists merely in name; the citizens are left to fend for their own safety. Far superior was the era of monarchy, wherein a king would willingly lay down his life for the sake of his nation, his kingdom, his religion, and his subjects. Today's democracy neither listens to the voice of its citizens nor provides them with protection.\n\nEven the states governed by the BJP — a massive and highly renowned organization — are not safe havens for Hindus. As a case in point, consider the incident in Devbhumi (the Land of Gods), where a Muslim youth attempted to assault a mother and daughter; they managed to save their lives only by fleeing the scene. Neither was this incident reported in the news — to raise public awareness — nor did any political leaders offer a single comment on the matter.\n\nThe Waqf Board Act: This legislation has resulted in the confiscation of vast tracts of land from Hindus, all in the name of Allah. This Board was established specifically for the Muslim community, and the Act governing it came into existence in 1995. The Muslim Waqf Act of 1923 was enacted with the objective of providing counsel on matters pertaining to the functioning of State Waqf Boards across the country, as well as ensuring the proper administration of Waqfs (religious endowments).\n\nA Waqf constitutes the permanent dedication — by philanthropists and as recognized under Muslim law — of movable or immovable assets for religious, pious, or charitable purposes. However, this represents merely one side of the coin; the other side has yet to be revealed. This Waqf Board has seized the lands of thousands of Hindus in the name of Allah — a deeply objectionable act that has justifiably incensed the Hindu community.",
+        date: new Date().toDateString()
+      }
+    ];
+    saveArticles(articles);
+  }
+
+  // ── SECTIONS ──
+  const sections = ['home','all','write','about','article'];
+  let currentSection = 'home';
+
+  function showSection(name, articleId) {
+    sections.forEach(s => {
+      const el = document.getElementById('sec-' + s);
+      if (el) el.style.display = 'none';
+    });
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    const navMap = { home:0, all:1, write:2, about:3 };
+    const navBtns = document.querySelectorAll('nav button');
+    if (navMap[name] !== undefined) navBtns[navMap[name]].classList.add('active');
+
+    const target = document.getElementById('sec-' + name);
+    if (target) target.style.display = '';
+
+    if (name === 'home') renderHome();
+    if (name === 'all') renderAll();
+    if (name === 'article' && articleId) renderArticle(articleId);
+
+    currentSection = name;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── RENDER HOME ──
+  function renderHome() {
+    const featArea = document.getElementById('featured-area');
+    const moreGrid = document.getElementById('more-grid');
+
+    if (articles.length === 0) {
+      featArea.innerHTML = '<div class="empty-state">No articles yet — be the first to submit a piece!</div>';
+      moreGrid.innerHTML = '';
+      return;
+    }
+
+    const [feat, ...rest] = [...articles].reverse();
+
+    // Featured block
+    const sideItems = rest.slice(0, 3);
+    featArea.innerHTML = `
+      <div class="featured-grid">
+        <div class="featured-main" onclick="showSection('article', ${feat.id})">
+          <div class="kicker">${feat.category}</div>
+          <div class="headline">${esc(feat.title)}</div>
+          <div class="byline">By ${esc(feat.author || 'Anonymous')} &mdash; ${feat.date}</div>
+          ${feat.deck ? `<div class="deck">${esc(feat.deck)}</div>` : ''}
+          <div style="font-size:1rem; color:#3d2c0e; line-height:1.7;">${esc(firstPara(feat.body))}</div>
+          <button class="read-more">Continue Reading →</button>
+        </div>
+        <div class="featured-sidebar">
+          ${sideItems.length ? sideItems.map(a => `
+            <div class="side-article" onclick="showSection('article', ${a.id})">
+              <div class="kicker">${a.category}</div>
+              <div class="headline sm">${esc(a.title)}</div>
+              <div class="byline">${esc(a.author || 'Anonymous')}</div>
+              ${a.deck ? `<div style="font-size:0.88rem; font-style:italic; color:#5a3e0e; margin-top:0.3rem;">${esc(a.deck)}</div>` : ''}
+            </div>
+          `).join('') : '<div class="side-article" style="color:var(--sepia); font-style:italic; font-size:0.9rem;">More articles will appear here.</div>'}
+        </div>
+      </div>`;
+
+    // More grid
+    const moreItems = rest.slice(3, 9);
+    moreGrid.innerHTML = moreItems.length ? moreItems.map(a => articleCard(a)).join('') :
+      '<div class="empty-state" style="grid-column:1/-1;">Submit more pieces to fill the archive!</div>';
+  }
+
+  // ── RENDER ALL ──
+  function renderAll() {
+    const grid = document.getElementById('all-grid');
+    const empty = document.getElementById('all-empty');
+    const sorted = [...articles].reverse();
+    if (!sorted.length) { grid.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    grid.innerHTML = sorted.map(a => articleCard(a)).join('');
+  }
+
+  function articleCard(a) {
+    return `<div class="article-card" onclick="showSection('article', ${a.id})">
+      <div class="kicker">${a.category}</div>
+      <div class="headline md">${esc(a.title)}</div>
+      <div class="byline">By ${esc(a.author || 'Anonymous')} &mdash; ${a.date}</div>
+      ${a.deck ? `<div class="deck" style="font-size:0.92rem;">${esc(a.deck)}</div>` : ''}
+      <button class="read-more">Read →</button>
+    </div>`;
+  }
+
+  // ── RENDER ARTICLE ──
+  function renderArticle(id) {
+    const a = articles.find(x => x.id === id);
+    if (!a) { showSection('home'); return; }
+    const paras = a.body.split(/\n+/).filter(Boolean);
+    const sec = document.getElementById('sec-article');
+    sec.innerHTML = `<div class="article-full">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; margin-bottom:1.5rem;">
+        <button class="back-btn" style="margin-bottom:0;" onclick="showSection('home')">← Back to Gazette</button>
+        <button class="btn-delete" onclick="showConfirmDelete(${a.id})">✕ Delete This Article</button>
+      </div>
+      <div id="confirm-delete-bar"></div>
+      <div class="kicker">${a.category}</div>
+      <div class="headline">${esc(a.title)}</div>
+      <div class="byline">By ${esc(a.author || 'Anonymous')} &nbsp;&mdash;&nbsp; ${a.date}</div>
+      ${a.deck ? `<div class="deck">${esc(a.deck)}</div>` : ''}
+      <hr class="rule"/>
+      <div class="article-body">${paras.map((p) => `<p>${esc(p)}</p>`).join('')}</div>
+      <div class="ornament">✦ ✦ ✦</div>
+      <div style="text-align:center; margin-top:1rem;">
+        <button class="back-btn" onclick="showSection('home')">Return to Front Page</button>
+      </div>
+    </div>`;
+  }
+
+  function showConfirmDelete(id) {
+    const bar = document.getElementById('confirm-delete-bar');
+    if (!bar) return;
+    bar.innerHTML = `<div class="confirm-bar">
+      <span>Are you sure you wish to permanently remove this article from the Gazette?</span>
+      <button class="btn-confirm-yes" onclick="deleteArticle(${id})">Yes, Delete</button>
+      <button class="btn-confirm-no" onclick="hideConfirmDelete()">Cancel</button>
+    </div>`;
+  }
+
+  function hideConfirmDelete() {
+    const bar = document.getElementById('confirm-delete-bar');
+    if (bar) bar.innerHTML = '';
+  }
+
+  function deleteArticle(id) {
+    articles = articles.filter(a => a.id !== id);
+    saveArticles(articles);
+    toast('Article has been removed from the Gazette.');
+    setTimeout(() => showSection('home'), 1000);
+  }
+
+  // ── SUBMIT ──
+  function submitArticle() {
+    const title = document.getElementById('f-title').value.trim();
+    const body  = document.getElementById('f-body').value.trim();
+    if (!title || !body) { toast('Please fill in the Headline and Body.'); return; }
+
+    const article = {
+      id: Date.now(),
+      title,
+      category: document.getElementById('f-cat').value,
+      author: document.getElementById('f-author').value.trim() || 'Anonymous',
+      deck: document.getElementById('f-deck').value.trim(),
+      body,
+      date: new Date().toDateString()
+    };
+
+    articles.push(article);
+    saveArticles(articles);
+
+    // Clear form
+    ['f-title','f-author','f-deck','f-body'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-cat').selectedIndex = 0;
+
+    toast('Your piece has been published to the Gazette!');
+    setTimeout(() => showSection('home'), 1200);
+  }
+
+  // ── UTILS ──
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function firstPara(body) {
+    return (body || '').split(/\n/)[0].substring(0, 300);
+  }
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── DATE ──
+  document.getElementById('masthead-date').textContent = new Date().toLocaleDateString('en-IN', {
+    weekday:'long', year:'numeric', month:'long', day:'numeric'
+  });
+
+  // ── INIT ──
+  renderHome();
+</script>
+</body>
+</html>
