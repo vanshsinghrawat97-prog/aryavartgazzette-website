@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Aryavart Gazette</title>
-<link rel="icon" href="Delicious_Cardamom_and_Orange_Shortbread_Recipe__A_Citrus_Delight-removebg-preview">
+<link rel="icon" href="Delicious_Cardamom_and_Orange_Shortbread_Recipe__A_Citrus_Delight-removebg-preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -17,7 +17,9 @@
     --accent:#7a1f1f;
     --shadow: rgba(0,0,0,0.15);
   }
+
   * { box-sizing: border-box; }
+
   body{
     margin:0;
     background: var(--paper-dark);
@@ -28,6 +30,7 @@
     font-family: 'Old Standard TT', Georgia, serif;
     min-height: 100vh;
   }
+
   .page{
     max-width: 980px;
     margin: 24px auto;
@@ -42,6 +45,8 @@
     border: 1px solid #b8a97f;
     pointer-events:none;
   }
+
+  /* ---------- MASTHEAD ---------- */
   .top-bar{
     display:flex; justify-content:space-between; align-items:center;
     font-size: 0.72rem;
@@ -52,11 +57,12 @@
     padding-bottom: 6px;
     margin-bottom: 14px;
   }
+
   .masthead{
     text-align:center;
     padding: 6px 0 14px;
     border-bottom: 4px double var(--rule);
-    margin-bottom: 0;
+    margin-bottom: 6px;
   }
   .masthead h1{
     font-family: 'Playfair Display', 'Old Standard TT', serif;
@@ -72,32 +78,6 @@
     margin-top: 2px;
   }
 
-  /* ---------- SECTION NAV ---------- */
-  nav.section-nav{
-    display:flex;
-    justify-content:center;
-    gap: 0;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 26px;
-    background: var(--paper-dark);
-  }
-  nav.section-nav a{
-    padding: 10px 26px;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--ink-faded);
-    border-right: 1px solid #cbbd94;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-  nav.section-nav a:last-child{ border-right: none; }
-  nav.section-nav a:hover, nav.section-nav a.active{
-    background: var(--ink);
-    color: var(--paper);
-  }
-
   .sub-bar{
     display:flex; justify-content:space-between;
     font-size: 0.75rem;
@@ -108,6 +88,7 @@
     margin-bottom: 26px;
   }
 
+  /* ---------- ADMIN CONTROLS ---------- */
   .admin-link{
     background:none;
     border: 1px solid var(--ink-faded);
@@ -172,6 +153,7 @@
   .btn.secondary:hover{ background: var(--ink); color: var(--paper); }
   .error-msg{ color: var(--accent); font-size: 0.8rem; min-height: 1em; margin-bottom: 6px; }
 
+  /* ---------- ADMIN PANEL (publish form) ---------- */
   .admin-panel{
     border: 2px solid var(--rule);
     background: #fffdf6;
@@ -203,7 +185,7 @@
     color: var(--ink-faded);
     margin-bottom: 4px;
   }
-  input[type=text], input[type=email], textarea, select{
+  input[type=text], textarea, select{
     width: 100%;
     font-family: inherit;
     font-size: 0.95rem;
@@ -222,15 +204,14 @@
     font-style: italic;
   }
 
-  .site-section{ margin-bottom: 44px; scroll-margin-top: 18px; }
-
+  /* ---------- SECTIONS ---------- */
   .section-label{
     text-align:center;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-size: 0.8rem;
     color: var(--ink-faded);
-    margin: 0 0 20px;
+    margin: 40px 0 20px;
     position: relative;
   }
   .section-label::before, .section-label::after{
@@ -243,36 +224,36 @@
   }
 
   /* ---------- INTRODUCTION ---------- */
-  .intro-box{
+  .introduction{
     background: #fffdf6;
     border: 1px solid #cbbd94;
-    padding: 24px 30px;
-  }
-  .intro-box h2{
-    font-family: 'Playfair Display', serif;
-    margin-top: 0;
-    font-size: 1.6rem;
-    text-align: center;
-  }
-  .intro-box p{
-    line-height: 1.7;
-    font-size: 0.98rem;
+    padding: 24px 28px;
+    margin-bottom: 30px;
     text-align: justify;
-    margin: 0 0 12px;
   }
-  .intro-box p:last-child{ margin-bottom: 0; }
+  .introduction h2{
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .introduction p{
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0;
+  }
 
   /* ---------- ARTICLES ---------- */
   .articles{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0 36px;
-    align-items: start;
+    columns: 2;
+    column-gap: 36px;
   }
-  @media (max-width: 700px){ .articles{ grid-template-columns: 1fr; } }
+  @media (max-width: 700px){ .articles{ columns: 1; } }
 
   article.story{
-    overflow: hidden;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
     margin-bottom: 30px;
     padding-bottom: 24px;
     border-bottom: 1px solid #cbbd94;
@@ -328,62 +309,70 @@
     column-span: all;
   }
 
-  /* ---------- FEEDBACK ---------- */
-  .feedback-form{
+  /* ---------- FEEDBACK SECTION ---------- */
+  .feedback-section{
     background: #fffdf6;
     border: 1px solid #cbbd94;
-    padding: 24px 30px;
-    max-width: 560px;
-    margin: 0 auto;
+    padding: 24px 28px;
+    margin-top: 30px;
   }
-  .feedback-form p.intro-line{
-    text-align:center;
-    font-style: italic;
-    color: var(--ink-faded);
-    margin-top: 0;
-  }
-  .feedback-thanks{
-    text-align:center;
-    font-style: italic;
-    color: var(--ink-faded);
-    padding: 20px 0;
-    display:none;
-  }
-
-  .feedback-inbox{
-    margin-top: 34px;
-    border-top: 2px solid var(--rule);
-    padding-top: 18px;
-  }
-  .feedback-inbox h3{
-    font-family:'Playfair Display', serif;
-    font-size: 1.1rem;
+  .feedback-section h2{
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
     margin: 0 0 14px;
-    text-align:center;
+    color: var(--ink);
   }
-  .feedback-note{
-    text-align:center;
-    font-size: 0.68rem;
+  .feedback-section p{
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-faded);
+    margin: 0 0 18px;
+  }
+  .feedback-form{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .feedback-form label{
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    margin-bottom: 16px;
-  }
-  .feedback-item{
-    border-bottom: 1px solid #cbbd94;
-    padding: 12px 0;
-  }
-  .feedback-item .fb-meta{
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     color: var(--ink-faded);
     margin-bottom: 4px;
   }
-  .feedback-item .fb-message{
+  .feedback-form input[type=text],
+  .feedback-form input[type=email],
+  .feedback-form textarea{
+    width: 100%;
+    font-family: inherit;
     font-size: 0.95rem;
+    padding: 8px 10px;
+    border: 1px solid #a89b78;
+    background: #fffdf6;
+  }
+  .feedback-form textarea{
+    resize: vertical;
+    min-height: 120px;
     line-height: 1.5;
-    white-space: pre-wrap;
+  }
+  .feedback-form button{
+    align-self: flex-start;
+    font-family: 'Old Standard TT', Georgia, serif;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 9px 18px;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .feedback-form button:hover{ background: var(--accent); }
+  .feedback-status{
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--ink-faded);
+    min-height: 1em;
   }
 
   footer{
@@ -426,67 +415,54 @@
 
   <div class="masthead">
     <h1>The Aryavart Gazette</h1>
-    <div class="tagline">"सत्यमेवेश्वरो लोके सत्ये धर्मः सदाश्रितः। सत्यमूलानि सर्वाणि सत्यान्नास्ति परं पदम्॥" — Truth is the supreme Lord in the world, and righteousness (dharma) is always sheltered in truth. All things have truth as their root, and there is no state or position higher than truth. &mdash; Est. 2026</div>
+    <div class="tagline">"सत्यं सत्सु सदा धर्मः सत्यं धर्मः सनातनः।सत्यमेव नमस्येत सत्यं हि परमा गतिः॥ - Truth is always righteousness among the virtuous Truth is the eternal righteousness Truth alone should be worshiped Truth is the supreme refuge" &mdash; Est. 2026</div>
   </div>
 
-  <nav class="section-nav">
-    <a href="#introduction" data-section="introduction">Introduction</a>
-    <a href="#articles" data-section="articles">Articles</a>
-    <a href="#feedback" data-section="feedback">Feedback</a>
-  </nav>
+  <div class="sub-bar">
+    <span>Vol. CXXVII — No. <span id="issue-no">1</span></span>
+    <span id="article-count-label">— Articles —</span>
+  </div>
 
-  <!-- ===================== INTRODUCTION ===================== -->
-  <section class="site-section" id="introduction">
-    <div class="section-label">Introduction</div>
-    <div class="intro-box">
-      <h2>Welcome to the Gazette</h2>
-      <p>The Aryavart Gazette is a publication devoted to truth, dharma, and the honest reporting of the events, ideas, and questions that shape our society. In the old tradition of the printed press, every article here is written and set to type by Shri Vajendra Singh Rawat before it reaches the front page.</p>
-      <p>We cover politics, social affairs, history, faith, and the Societal Issue of the day &mdash; each piece considered and published with care. Readers are warmly invited to browse the Articles section below, and to share their thoughts with us in the Feedback section.</p>
-    </div>
-  </section>
+  <div id="admin-panel-container"></div>
 
-  <!-- ===================== ARTICLES ===================== -->
-  <section class="site-section" id="articles">
-    <div class="section-label">Articles</div>
+  <!-- INTRODUCTION SECTION -->
+  <div class="section-label">Introduction</div>
+  <div class="introduction">
+    <h2>Welcome to The Aryavart Gazette</h2>
+    <p>Aryavart Gazette is a New Article Publishing Organization truthful towards journalism and informed discourse in the heart of our nation. Named after the ancient land of Aryavarta, our publication carries forward a legacy of integrity, courage, and commitment to the people. We believe in the power of words to illuminate truth, inspire change, and hold power to account. Our pages feature in-depth reporting on national affairs, local community stories, cultural heritage, and perspectives that matter to our readers. From the bustling streets of our cities to the quiet villages of our countryside, we bring you stories that reflect the diverse tapestry of our society. Join us in our mission to uphold the highest ideals of journalism — because an informed citizenry is the foundation of a thriving democracy.</p>
+  </div>
 
-    <div class="sub-bar">
-      <span>Vol. CXXVII — No. <span id="issue-no">1</span></span>
-      <span id="article-count-label">— Articles —</span>
-    </div>
+  <!-- ARTICLES SECTION -->
+  <div class="section-label">Articles</div>
+  <div class="articles" id="articles-container">
+    <div class="empty-state">Loading the Articles…</div>
+  </div>
 
-    <div id="admin-panel-container"></div>
-
-    <div class="articles" id="articles-container">
-      <div class="empty-state">Loading the Articles…</div>
-    </div>
-  </section>
-
-  <!-- ===================== FEEDBACK ===================== -->
-  <section class="site-section" id="feedback">
-    <div class="section-label">Feedback</div>
-
-    <div class="feedback-form">
-      <p class="intro-line">Have thoughts on something you've read? Write to Shri Vajendra Singh Rawat below.</p>
-      <div id="feedback-error" class="error-msg" style="text-align:center;"></div>
+  <!-- FEEDBACK SECTION -->
+  <div class="section-label">Feedback</div>
+  <div class="feedback-section">
+    <h2>Share Your Thoughts</h2>
+    <p>We value your feedback! Whether you have a story idea, a correction, or simply want to share your thoughts on our coverage, please use the form below to reach Shri Vajendra Singh Rawat.</p>
+    <form class="feedback-form" id="feedback-form">
       <div>
         <label for="fb-name">Your Name</label>
-        <input type="text" id="fb-name" placeholder="Enter your name">
+        <input type="text" id="fb-name" placeholder="Enter your name" required>
       </div>
-      <div style="margin-top:12px;">
-        <label for="fb-message">Your Feedback</label>
-        <textarea id="fb-message" placeholder="Share your thoughts, corrections, or suggestions..." style="min-height:100px;"></textarea>
+      <div>
+        <label for="fb-subject">Subject</label>
+        <input type="text" id="fb-subject" placeholder="What's your feedback about?" required>
       </div>
-      <div style="text-align:center; margin-top:16px;">
-        <button class="btn" id="fb-submit-btn">Send Feedback</button>
+      <div>
+        <label for="fb-message">Your Message</label>
+        <textarea id="fb-message" placeholder="Write your feedback here..." required></textarea>
       </div>
-      <div class="feedback-thanks" id="feedback-thanks">Thank you &mdash; your feedback has been sent to Shri Vajendra Singh Rawat.</div>
-    </div>
-
-    <div id="feedback-inbox-container"></div>
-  </section>
+      <button type="submit">Send Feedback</button>
+      <div class="feedback-status" id="feedback-status"></div>
+    </form>
+  </div>
 
   <footer>
-    &copy; <span id="year"></span> The Aryavart Gazette — Published by Vajendra Singh Rawat
+    &copy; <span id="year"></span> The Aryavart Gazette — Published by the Shri Vajendra Singh Rawat
   </footer>
 </div>
 
@@ -497,9 +473,7 @@
 const ADMIN_PASSWORD = "Narayan";
 let isAdmin = false;
 let articles = [];
-let feedbackList = [];
-const LOCAL_KEY_ARTICLES = 'aryavart_gazette_articles';
-const LOCAL_KEY_FEEDBACK = 'aryavart_gazette_feedback';
+let feedbacks = [];
 
 const todayStr = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 document.getElementById('today-date').textContent = todayStr;
@@ -518,22 +492,11 @@ function escapeHtml(str){
   return d.innerHTML;
 }
 
-/* ---------------- STORAGE ----------------
-   Uses window.storage when running inside a Claude artifact
-   preview; falls back to localStorage when opened as a plain
-   HTML file in a regular browser, so data still persists. */
-const hasClaudeStorage = () =>
-  typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function';
-
+/* ---------------- STORAGE ---------------- */
 async function loadArticles(){
   try{
-    if(hasClaudeStorage()){
-      const result = await window.storage.get('articles', true);
-      articles = result && result.value ? JSON.parse(result.value) : [];
-    } else {
-      const raw = localStorage.getItem(LOCAL_KEY_ARTICLES);
-      articles = raw ? JSON.parse(raw) : [];
-    }
+    const stored = localStorage.getItem('articles');
+    articles = stored ? JSON.parse(stored) : [];
   }catch(e){
     articles = [];
   }
@@ -543,63 +506,40 @@ async function loadArticles(){
 
 async function saveArticles(){
   try{
-    if(hasClaudeStorage()){
-      const result = await window.storage.set('articles', JSON.stringify(articles), true);
-      if(!result){ showToast('Could not save — please try again.'); }
-    } else {
-      localStorage.setItem(LOCAL_KEY_ARTICLES, JSON.stringify(articles));
-    }
+    localStorage.setItem('articles', JSON.stringify(articles));
+    showToast('Article saved successfully.');
   }catch(e){
     showToast('Storage error while saving.');
   }
 }
 
-async function loadFeedback(){
+async function loadFeedbacks(){
   try{
-    if(hasClaudeStorage()){
-      const result = await window.storage.get('feedback', true);
-      feedbackList = result && result.value ? JSON.parse(result.value) : [];
-    } else {
-      const raw = localStorage.getItem(LOCAL_KEY_FEEDBACK);
-      feedbackList = raw ? JSON.parse(raw) : [];
-    }
+    const stored = localStorage.getItem('feedbacks');
+    feedbacks = stored ? JSON.parse(stored) : [];
   }catch(e){
-    feedbackList = [];
+    feedbacks = [];
   }
-  feedbackList.sort((a,b)=> b.timestamp - a.timestamp);
-  renderFeedbackInbox();
 }
 
-async function saveFeedback(){
+async function saveFeedbacks(){
   try{
-    if(hasClaudeStorage()){
-      const result = await window.storage.set('feedback', JSON.stringify(feedbackList), true);
-      if(!result){ showToast('Could not save feedback — please try again.'); }
-    } else {
-      localStorage.setItem(LOCAL_KEY_FEEDBACK, JSON.stringify(feedbackList));
-    }
+    localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
   }catch(e){
     showToast('Storage error while saving feedback.');
   }
 }
 
-/* ---------------- NAV ---------------- */
-document.querySelectorAll('.section-nav a').forEach(link=>{
-  link.addEventListener('click', e=>{
-    e.preventDefault();
-    const target = document.getElementById(link.dataset.section);
-    if(target){ target.scrollIntoView({ behavior:'smooth', block:'start' }); }
-  });
-});
+async function saveFeedbacks(){
+  try{
+    const result = await window.storage.set('feedbacks', JSON.stringify(feedbacks), true);
+    if(!result){ showToast('Could not save feedback — please try again.'); }
+  }catch(e){
+    showToast('Storage error while saving feedback.');
+  }
+}
 
-/* ---------------- RENDER: ADMIN ---------------- */
-/* The Admin Login button only appears when the page is loaded with
-   ?admin=1 in the URL — e.g. yoursite.html?admin=1
-   Ordinary visitors who load the plain URL never see any admin
-   entry point at all, even if they inspect the page while it's idle. */
-const urlParams = new URLSearchParams(window.location.search);
-const showAdminEntry = urlParams.get('admin') === '1';
-
+/* ---------------- RENDER ---------------- */
 function renderAdminArea(){
   const area = document.getElementById('admin-area');
   if(isAdmin){
@@ -608,15 +548,11 @@ function renderAdminArea(){
       isAdmin = false;
       renderAdminArea();
       renderAdminPanel();
-      renderArticles();
-      renderFeedbackInbox();
       showToast('Logged out.');
     };
-  } else if(showAdminEntry){
+  } else {
     area.innerHTML = `<button class="admin-link" id="login-btn">Admin Login</button>`;
     document.getElementById('login-btn').onclick = openLoginModal;
-  } else {
-    area.innerHTML = '';
   }
 }
 
@@ -630,27 +566,26 @@ function renderAdminPanel(){
       <div class="field-row">
         <div>
           <label for="f-title">Headline</label>
-          <input type="text" id="f-title" placeholder="Enter the headline">
+          <input type="text" id="f-title" placeholder="Enter the Headline">
         </div>
         <div>
           <label for="f-author">Byline (Author)</label>
-          <input type="text" id="f-author" placeholder="Staff Correspondent" value="Staff Correspondent">
+          <input type="text" id="f-author" placeholder="Shri Vajendra Singh Rawat" value="Shri Vajendra Singh Rawat">
         </div>
         <div>
           <label for="f-category">Section</label>
           <select id="f-category">
             <option>Political</option>
             <option>Socio - Political</option>
-            <option>Controversial</option>
-            <option>Historical</option>
-            <option>Religious</option>
             <option>Societal Issue</option>
+            <option>Religious</option>
+            <option>Controversial</option>
           </select>
         </div>
       </div>
       <div>
         <label for="f-body">Article Text</label>
-        <textarea id="f-body" placeholder="Write the Paragraph...."></textarea>
+        <textarea id="f-body" placeholder="Write your paragraph here...."></textarea>
       </div>
       <div class="admin-panel-footer">
         <span class="admin-status" id="publish-status"></span>
@@ -661,7 +596,6 @@ function renderAdminPanel(){
   document.getElementById('publish-btn').onclick = publishArticle;
 }
 
-/* ---------------- RENDER: ARTICLES ---------------- */
 function renderArticles(){
   const container = document.getElementById('articles-container');
   document.getElementById('article-count-label').textContent = `— ${articles.length} Article${articles.length===1?'':'s'} —`;
@@ -677,7 +611,7 @@ function renderArticles(){
       <h2>${escapeHtml(a.title)}</h2>
       <div class="byline">By ${escapeHtml(a.author)} <span>&nbsp;|&nbsp; ${escapeHtml(a.category)} &nbsp;|&nbsp; ${escapeHtml(a.date)}</span></div>
       <div class="body-text">${escapeHtml(a.body)}</div>
-      ${isAdmin ? `<button type="button" class="delete-btn" data-id="${a.id}">Delete</button>` : ''}
+      ${isAdmin ? `<button class="delete-btn" data-id="${a.id}">Retract Article</button>` : ''}
     </article>
   `).join('');
 
@@ -688,6 +622,7 @@ function renderArticles(){
   }
 }
 
+/* ---------------- ACTIONS ---------------- */
 async function publishArticle(){
   const title = document.getElementById('f-title').value.trim();
   const author = document.getElementById('f-author').value.trim() || 'Staff Correspondent';
@@ -719,73 +654,47 @@ async function publishArticle(){
   showToast('Published to the front page.');
 }
 
-function deleteArticle(id){
-  const root = document.getElementById('modal-root');
+async function deleteArticle(id){
+  articles = articles.filter(a => a.id !== id);
+  renderArticles();
+  await saveArticles();
+  showToast('Article retracted.');
+}
 
-  root.innerHTML = `
-    <div class="delete-modal-overlay" id="delete-overlay">
-      <div class="delete-modal">
-        <h3>Delete Article</h3>
+/* ---------------- FEEDBACK FORM ---------------- */
+document.getElementById('feedback-form').addEventListener('submit', async function(e){
+  e.preventDefault();
 
-        <p>
-          Are you sure you want to delete this article?
-        </p>
+  const name = document.getElementById('fb-name').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+  const subject = document.getElementById('fb-subject').value.trim();
+  const message = document.getElementById('fb-message').value.trim();
+  const status = document.getElementById('feedback-status');
 
-        <div class="delete-modal-actions">
-          <button class="delete-confirm" id="confirm-delete">
-            Delete
-          </button>
-
-          <button class="delete-cancel" id="cancel-delete">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('confirm-delete').onclick = async () => {
-    articles = articles.filter(a => String(a.id) !== String(id));
-
-    await saveArticles();
-
-    root.innerHTML = '';
-
-    renderArticles();
-
-    showToast('Article deleted.');
-  };
-
-  document.getElementById('cancel-delete').onclick = () => {
-    root.innerHTML = '';
-  };
-xasync function deleteFeedback(id){
-  if(!isAdmin) return;
-
-  const feedback = feedbackList.find(f => String(f.id) === String(id));
-  if(!feedback) {
-    showToast('Feedback not found.');
+  if(!name || !email || !subject || !message){
+    status.textContent = 'Please fill in all fields.';
+    status.style.color = '#7a1f1f';
     return;
   }
 
-  if(!confirm(`Delete feedback from ${feedback.name}?\n\nThis action cannot be undone.`)) return;
+  const newFeedback = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2,7),
+    name, email, subject, message,
+    timestamp: Date.now()
+  };
 
-  const oldFeedback = [...feedbackList];
-  feedbackList = feedbackList.filter(f => String(f.id) !== String(id));
+  feedbacks.unshift(newFeedback);
+  await saveFeedbacks();
 
-  try {
-    await saveFeedback();
-    renderFeedbackInbox();
-    showToast('Feedback removed.');
-  } catch (error) {
-    feedbackList = oldFeedback;
-    renderFeedbackInbox();
-    showToast('Could not delete the feedback.');
-    console.error('Delete feedback error:', error);
-  }
-}
+  document.getElementById('feedback-form').reset();
+  status.textContent = 'Thank you! Your feedback has been received.';
+  status.style.color = '#4a4237';
+  showToast('Feedback sent successfully.');
 
-document.getElementById('fb-submit-btn').onclick = submitFeedback;
+  setTimeout(() => {
+    status.textContent = '';
+  }, 4000);
+});
 
 /* ---------------- LOGIN MODAL ---------------- */
 function openLoginModal(){
@@ -814,7 +723,6 @@ function openLoginModal(){
       renderAdminArea();
       renderAdminPanel();
       renderArticles();
-      renderFeedbackInbox();
       showToast('Welcome back, Editor.');
     } else {
       document.getElementById('login-error').textContent = 'Incorrect password. Try again.';
@@ -833,7 +741,7 @@ function openLoginModal(){
 renderAdminArea();
 renderAdminPanel();
 loadArticles();
-loadFeedback();
+loadFeedbacks();
 </script>
 
 </body>
