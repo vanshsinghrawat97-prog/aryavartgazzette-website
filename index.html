@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Aryavart Gazette</title>
-<link rel="icon" href="Delicious_Cardamom_and_Orange_Shortbread_Recipe__A_Citrus_Delight-removebg-preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -264,14 +263,15 @@
 
   /* ---------- ARTICLES ---------- */
   .articles{
-    columns: 2;
-    column-gap: 36px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 36px;
+    align-items: start;
   }
-  @media (max-width: 700px){ .articles{ columns: 1; } }
+  @media (max-width: 700px){ .articles{ grid-template-columns: 1fr; } }
 
   article.story{
-    break-inside: avoid;
-    -webkit-column-break-inside: avoid;
+    overflow: hidden;
     margin-bottom: 30px;
     padding-bottom: 24px;
     border-bottom: 1px solid #cbbd94;
@@ -439,8 +439,8 @@
     <div class="section-label">Introduction</div>
     <div class="intro-box">
       <h2>Welcome to the Gazette</h2>
-      <p>The Aryavart Gazette is a publication devoted to truth, dharma, and the honest reporting of the events, ideas, and questions that shape our society. In the old tradition of the printed press, every article here is written and set to type by Vajendra Singh Rawat before it reaches the front page.</p>
-      <p>We cover politics, social affairs, history, faith, and the Societal Issue of the day &mdash; each piece considered and published with care. Readers are warmly invited to browse the Articles section below, and to share their thoughts with us in the Feedback section.</p>
+      <p>The Aryavart Gazette is a publication devoted to truth, dharma, and the honest reporting of the events, ideas, and questions that shape our society. In the old tradition of the printed press, every article here is written and set to type by the Editorial Staff before it reaches the front page.</p>
+      <p>We cover politics, social affairs, history, faith, and the pressing issues of the day &mdash; each piece considered and published with care. Readers are warmly invited to browse the Articles section below, and to share their thoughts with us in the Feedback section.</p>
     </div>
   </section>
 
@@ -465,7 +465,7 @@
     <div class="section-label">Feedback</div>
 
     <div class="feedback-form">
-      <p class="intro-line">Have thoughts on something you've read? Write to Vajendra Singh Rawat below.</p>
+      <p class="intro-line">Have thoughts on something you've read? Write to the Editorial Staff below.</p>
       <div id="feedback-error" class="error-msg" style="text-align:center;"></div>
       <div>
         <label for="fb-name">Your Name</label>
@@ -478,7 +478,7 @@
       <div style="text-align:center; margin-top:16px;">
         <button class="btn" id="fb-submit-btn">Send Feedback</button>
       </div>
-      <div class="feedback-thanks" id="feedback-thanks">Thank you &mdash; your feedback has been sent to Vajendra Singh Rawat.</div>
+      <div class="feedback-thanks" id="feedback-thanks">Thank you &mdash; your feedback has been sent to the Editorial Staff.</div>
     </div>
 
     <div id="feedback-inbox-container"></div>
@@ -493,7 +493,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const ADMIN_PASSWORD = "Narayan";
+const ADMIN_PASSWORD = "Aryavart2026";
 let isAdmin = false;
 let articles = [];
 let feedbackList = [];
@@ -676,7 +676,7 @@ function renderArticles(){
       <h2>${escapeHtml(a.title)}</h2>
       <div class="byline">By ${escapeHtml(a.author)} <span>&nbsp;|&nbsp; ${escapeHtml(a.category)} &nbsp;|&nbsp; ${escapeHtml(a.date)}</span></div>
       <div class="body-text">${escapeHtml(a.body)}</div>
-      ${isAdmin ? `<button class="delete-btn" data-id="${a.id}">Retract Article</button>` : ''}
+      ${isAdmin ? `<button type="button" class="delete-btn" data-id="${a.id}">Delete</button>` : ''}
     </article>
   `).join('');
 
@@ -718,84 +718,70 @@ async function publishArticle(){
   showToast('Published to the front page.');
 }
 
-async function deleteArticle(id){
-  articles = articles.filter(a => a.id !== id);
-  renderArticles();
-  await saveArticles();
-  showToast('Article retracted.');
-}
+function deleteArticle(id){
+  const root = document.getElementById('modal-root');
 
-/* ---------------- RENDER: FEEDBACK ---------------- */
-function renderFeedbackInbox(){
-  const container = document.getElementById('feedback-inbox-container');
-  if(!isAdmin){ container.innerHTML = ''; return; }
+  root.innerHTML = `
+    <div class="delete-modal-overlay" id="delete-overlay">
+      <div class="delete-modal">
+        <h3>Delete Article</h3>
 
-  if(feedbackList.length === 0){
-    container.innerHTML = `
-      <div class="feedback-inbox">
-        <h3>Feedback Inbox</h3>
-        <div class="feedback-note">Visible only to the Admin</div>
-        <div class="empty-state">No feedback has been received yet.</div>
-      </div>`;
-    return;
-  }
+        <p>
+          Are you sure you want to delete this article?
+        </p>
 
-  container.innerHTML = `
-    <div class="feedback-inbox">
-      <h3>Feedback Inbox (${feedbackList.length})</h3>
-      <div class="feedback-note">Visible only to the Admin</div>
-      ${feedbackList.map(f => `
-        <div class="feedback-item" data-id="${f.id}">
-          <div class="fb-meta">${escapeHtml(f.name)} &nbsp;|&nbsp; ${escapeHtml(f.date)}</div>
-          <div class="fb-message">${escapeHtml(f.message)}</div>
-          <button class="delete-btn" data-id="${f.id}">Delete</button>
+        <div class="delete-modal-actions">
+          <button class="delete-confirm" id="confirm-delete">
+            Delete
+          </button>
+
+          <button class="delete-cancel" id="cancel-delete">
+            Cancel
+          </button>
         </div>
-      `).join('')}
+      </div>
     </div>
   `;
 
-  container.querySelectorAll('.delete-btn').forEach(btn=>{
-    btn.onclick = () => deleteFeedback(btn.dataset.id);
-  });
-}
+  document.getElementById('confirm-delete').onclick = async () => {
+    articles = articles.filter(a => String(a.id) !== String(id));
 
-async function submitFeedback(){
-  const nameInput = document.getElementById('fb-name');
-  const msgInput = document.getElementById('fb-message');
-  const errorEl = document.getElementById('feedback-error');
-  const name = nameInput.value.trim() || 'Anonymous Reader';
-  const message = msgInput.value.trim();
+    await saveArticles();
 
-  if(!message){
-    errorEl.textContent = 'Please write a message before sending.';
-    return;
-  }
-  errorEl.textContent = '';
+    root.innerHTML = '';
 
-  const entry = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2,7),
-    name, message,
-    date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }),
-    timestamp: Date.now()
+    renderArticles();
+
+    showToast('Article deleted.');
   };
 
-  feedbackList.unshift(entry);
-  await saveFeedback();
-  renderFeedbackInbox();
+  document.getElementById('cancel-delete').onclick = () => {
+    root.innerHTML = '';
+  };
+xasync function deleteFeedback(id){
+  if(!isAdmin) return;
 
-  nameInput.value = '';
-  msgInput.value = '';
-  const thanks = document.getElementById('feedback-thanks');
-  thanks.style.display = 'block';
-  setTimeout(()=> thanks.style.display = 'none', 3500);
-  showToast('Feedback sent to the Editorial Staff.');
-}
+  const feedback = feedbackList.find(f => String(f.id) === String(id));
+  if(!feedback) {
+    showToast('Feedback not found.');
+    return;
+  }
 
-async function deleteFeedback(id){
-  feedbackList = feedbackList.filter(f => f.id !== id);
-  await saveFeedback();
-  renderFeedbackInbox();
-  showToast('Feedback removed.');
+  if(!confirm(`Delete feedback from ${feedback.name}?\n\nThis action cannot be undone.`)) return;
+
+  const oldFeedback = [...feedbackList];
+  feedbackList = feedbackList.filter(f => String(f.id) !== String(id));
+
+  try {
+    await saveFeedback();
+    renderFeedbackInbox();
+    showToast('Feedback removed.');
+  } catch (error) {
+    feedbackList = oldFeedback;
+    renderFeedbackInbox();
+    showToast('Could not delete the feedback.');
+    console.error('Delete feedback error:', error);
+  }
 }
 
 document.getElementById('fb-submit-btn').onclick = submitFeedback;
